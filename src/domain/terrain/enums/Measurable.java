@@ -1,14 +1,18 @@
 package domain.terrain.enums;
 
+import domain.unit.models.aggregate.CO2Measurer;
+import domain.unit.models.aggregate.MethaneMeasurer;
+import domain.unit.models.aggregate.Thermometer;
+
 public enum Measurable {
     
-    CO2("CO2"),
-    METHANE("Metano"),
-    TEMPERATURE("Temperatura");
+    CO2(CO2Measurer.class),
+    METHANE(MethaneMeasurer.class),
+    TEMPERATURE(Thermometer.class);
 
-    public final String label;
+    public final Class<?> bindedAsset;
 
-    private Measurable(String label) {
-        this.label = label;
+    private Measurable(Class<?> bindedAsset) {
+        this.bindedAsset = bindedAsset;
     }
 }

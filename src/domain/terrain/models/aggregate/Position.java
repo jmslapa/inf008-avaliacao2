@@ -9,14 +9,29 @@ import domain.unit.models.Unit;
 
 public class Position {
     
+    private Long id;
     private int row;
     private int column;
     private Unit currentUnit;
 
+    /**
+     * Construtor da classe
+     * @param row numero de linhas da matriz
+     * @param column numero de colunas da matriz
+     */
     public Position(int row, int column) {
         this.row = row;
         this.column = column;
         this.currentUnit = null;
+    }
+
+    public Long getId() {
+        return this.id;
+    }
+
+    public Position setId(Long id) {
+        this.id = id;
+        return this;
     }
 
     public int getRow() {
@@ -37,6 +52,10 @@ public class Position {
         return this;
     }
 
+    /**
+     * Verifica se já existe uma unidade de monitoramento posicionada
+     * @return boolean
+     */
     public Boolean hasUnit() {
         if(this.currentUnit != null) {
             return true;
@@ -44,18 +63,19 @@ public class Position {
         return false;
     }
 
-    public Boolean isAvailable() {
-        return this.hasUnit() ? false : true;
-    }
-
-    public void toMonitor(Unit unit) throws Exception {
+    /**
+     * 
+     * @param unit unidade a ser posicionada
+     * @throws Exception
+     */
+    public void checkIn(Unit unit) throws Exception {
         if(this.hasUnit()) {
             throw new Exception("Já existe uma unidade atualmente posicionada.");
         }
         this.currentUnit = unit;
     }
 
-    public void leave(Unit unit) throws Exception {
+    public void checkOut(Unit unit) throws Exception {
         this.validadeCurrentUnit(unit);
         this.currentUnit = null;
     }
@@ -64,11 +84,9 @@ public class Position {
         return this.currentUnit;
     }
 
-    public <T> T measure(Asset<?> asset, Measurable measurable, Class<T> returnType) throws Exception {
+    public <T> T measure(Asset asset, Measurable measurable, Class<T> returnType) throws Exception {
         
         this.validateAsset(asset);
-
-        System.out.println("Foi feita medição de: " + measurable.label);
         
         switch(measurable) {
             case CO2:
@@ -82,7 +100,7 @@ public class Position {
         }
     }
 
-    public String takeAPicture(Asset<?> asset) {
+    public String takeAPicture(Asset asset) {
         return UUID.randomUUID().toString() + ".jpeg";
     }
 
@@ -91,7 +109,7 @@ public class Position {
             throw new Exception("A unidade que solicitou para deixar a posiçao, não está atualmente alocada.");
     }
 
-    private void validateAsset(Asset<?> asset) throws Exception {
+    private void validateAsset(Asset asset) throws Exception {
         if(!this.hasUnit())
             throw new Exception("Não há nenhuma unidade de monitoramento posicionada.");
         if(!this.getCurrentUnit().hasAsset(asset))

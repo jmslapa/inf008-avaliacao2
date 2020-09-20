@@ -1,8 +1,10 @@
 package domain.unit.contracts;
 
-public interface Mobile<T, R> {
-    
-    public void move(T target) throws Exception;
+import domain.terrain.models.aggregate.Position;
 
-    public R getDistance(T target) throws Exception;
+public interface Mobile {
+    
+    public void move(Position target) throws Exception;
+
+    public Double getDistance(Position target) throws Exception;
 }

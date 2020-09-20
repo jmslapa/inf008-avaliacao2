@@ -2,12 +2,15 @@ package domain.unit.models.aggregate;
 
 import domain.terrain.models.aggregate.Position;
 import domain.unit.contracts.Asset;
+import support.utils.MeasureResponse;
 
-public class Camera implements Asset<String>{
+public class Camera implements Asset {
 
     @Override
-    public String scan(Position position) throws Exception{
-        return position.takeAPicture(this);
+    public MeasureResponse<?> scan(Position position) throws Exception {
+        return new MeasureResponse<String>(position.takeAPicture(this), 
+            "A imagem foi capturada com sucesso."
+        );
     }
     
 }
