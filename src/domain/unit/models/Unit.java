@@ -6,11 +6,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import domain.terrain.models.aggregate.Position;
 import domain.unit.contracts.Asset;
 import domain.unit.contracts.Mobile;
-import support.utils.MeasureResponse;
+import support.utils.AssetResponse;
 
 abstract public class Unit {
 
@@ -109,12 +110,14 @@ abstract public class Unit {
         return true;
     }
 
-    public MeasureResponse<?> useAsset(Class<?> objectClass) throws Exception {
+    public AssetResponse<?> useAsset(Class<?> objectClass, Position target) throws Exception {
         
-        if (!this.isPositioned())
-            throw new Exception("A unidade não está posicionada");
         if (!this.hasAsset(objectClass))
-            throw new Exception("A unidade não possui o asset " + objectClass.getName());
+            throw new Exception("A unidade " + this.getId() + " não possui o asset " + objectClass.getName());
+        if (!this.isPositioned())
+            throw new Exception("A unidade " + this.getId() + " não está posicionada");
+        if (!this.position.equals(target))
+            throw new Exception("A unidade " + this.getId() + " não está posicionada sobre a posição destino");
 
         return this.getAsset(objectClass)
                    .scan(this.position)
@@ -139,6 +142,11 @@ abstract public class Unit {
     }
 
     public static Unit getClosest(List<Unit> units, Position target) {
+
+        units = units.stream().filter(u -> u.isPositioned()).collect(Collectors.toList());
+        if(units.isEmpty()) {
+            return null;
+        }
 
         Comparator<Unit> distanceComparator = new Comparator<Unit>() {
             public int compare(Unit unit1, Unit unit2) {
@@ -166,4 +174,13 @@ abstract public class Unit {
         return Objects.hash(id, position, assets);
     }
 
+    @Override
+    public String toString() {
+        return "{" +
+            " id='" + id + "'" +
+            ", position='" + position + "'" +
+            ", assets='" + assets.values() + "'" +
+            "}";
+    }
+    
 }

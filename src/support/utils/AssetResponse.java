@@ -5,7 +5,7 @@ import java.util.Objects;
 import domain.terrain.models.aggregate.Position;
 import domain.unit.models.Unit;
 
-public class MeasureResponse<T> {
+public class AssetResponse<T> {
     
     private T result;
     private String message;
@@ -13,10 +13,10 @@ public class MeasureResponse<T> {
     private Position target;
 
 
-    public MeasureResponse() {
+    public AssetResponse() {
     }
 
-    public MeasureResponse(T result, String message) {
+    public AssetResponse(T result, String message) {
         this.result = result;
         this.message = message;
     }
@@ -25,7 +25,7 @@ public class MeasureResponse<T> {
         return this.result;
     }
 
-    public MeasureResponse<T> setResult(T result) {
+    public AssetResponse<T> setResult(T result) {
         this.result = result;
         return this;
     }
@@ -34,7 +34,7 @@ public class MeasureResponse<T> {
         return this.message;
     }
 
-    public MeasureResponse<T> setMessage(String message) {
+    public AssetResponse<T> setMessage(String message) {
         this.message = message;
         return this;
     }
@@ -43,7 +43,7 @@ public class MeasureResponse<T> {
         return this.agent;
     }
 
-    public MeasureResponse<T> setAgent(Unit agent) {
+    public AssetResponse<T> setAgent(Unit agent) {
         this.agent = agent;
         return this;
     }
@@ -52,7 +52,7 @@ public class MeasureResponse<T> {
         return this.target;
     }
 
-    public MeasureResponse<T> setTarget(Position target) {
+    public AssetResponse<T> setTarget(Position target) {
         this.target = target;
         return this;
     }
@@ -70,13 +70,13 @@ public class MeasureResponse<T> {
     public boolean equals(Object o) {
         if (o == this)
             return true;
-        if (!(o instanceof MeasureResponse)) {
+        if (!(o instanceof AssetResponse)) {
             return false;
         }
-        MeasureResponse<T> measureResponse = null;
+        AssetResponse<T> measureResponse = null;
         
         try {
-            measureResponse = (MeasureResponse<T>) o; 
+            measureResponse = (AssetResponse<T>) o; 
         } catch (Exception e) {
             return false;
         }

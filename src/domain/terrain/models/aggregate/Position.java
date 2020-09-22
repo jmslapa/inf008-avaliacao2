@@ -10,8 +10,8 @@ import domain.unit.models.Unit;
 public class Position {
     
     private Long id;
-    private int row;
-    private int column;
+    private Integer row;
+    private Integer column;
     private Unit currentUnit;
 
     /**
@@ -19,7 +19,8 @@ public class Position {
      * @param row numero de linhas da matriz
      * @param column numero de colunas da matriz
      */
-    public Position(int row, int column) {
+    public Position(Long id, Integer row, Integer column) {
+        this.id = id;
         this.row = row;
         this.column = column;
         this.currentUnit = null;
@@ -34,20 +35,20 @@ public class Position {
         return this;
     }
 
-    public int getRow() {
+    public Integer getRow() {
         return this.row;
     }
 
-    public int getColumn() {
+    public Integer getColumn() {
         return this.column;
     }
 
-    public Position setRow(int row) {
+    public Position setRow(Integer row) {
         this.row = row;
         return this;
     }
 
-    public Position setColumn(int column) {
+    public Position setColumn(Integer column) {
         this.column = column;
         return this;
     }
@@ -95,6 +96,8 @@ public class Position {
                 return returnType.cast(0.0);
             case TEMPERATURE:
                 return returnType.cast(0);
+            case PICTURE:
+                return returnType.cast(this.takeAPicture(asset));
             default: 
                 return null;
         }
@@ -135,6 +138,7 @@ public class Position {
     @Override
     public String toString() {
         return "{" +
+            " id='" + getId() + "'" +
             " row='" + getRow() + "'" +
             ", column='" + getColumn() + "'" +
             "}";

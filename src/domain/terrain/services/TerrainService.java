@@ -8,26 +8,43 @@ import java.util.stream.Collectors;
 
 import domain.terrain.enums.Measurable;
 import domain.terrain.models.aggregate.Position;
+import domain.unit.contracts.Mobile;
 import domain.unit.models.Unit;
-import support.utils.MeasureResponse;
+import support.utils.AssetResponse;
 
 public class TerrainService {
     
-    public static Map<Measurable, MeasureResponse<?>> toMonitor(
+    public static Map<Measurable, AssetResponse<?>> toMonitor(
         Position position,
         List<Unit> units,
         Measurable ...measurables
     ) throws Exception {
         
-        Map<Measurable, MeasureResponse<?>> result = new HashMap<>();
+        Map<Measurable, AssetResponse<?>> result = new HashMap<>();
 
-        List<Unit> validUnits = TerrainService.getValidUnits(units, measurables);      
-        
+        List<Unit> validUnits = TerrainService.getValidUnits(units, measurables);
+
+        if(validUnits.isEmpty()) {
+            throw new Exception("Não há uma unidade apta a realizar o monitoramento solicitado.");
+        }
+
         Unit closest = Unit.getClosest(validUnits, position);
+
+        if(closest == null) {
+            throw new Exception("As seguintes unidades estão aptas, porém não posicionadas na área de cobertura.\n" 
+                                + validUnits
+            );
+        }
+            
+        
+        if(!closest.getPosition().equals(position)) {
+            ((Mobile) closest).move(position);
+        }
 
         for (Measurable measurable : measurables) {
             Class<?> assetClass = measurable.bindedAsset;
-            MeasureResponse<?> mr = closest.useAsset(assetClass);
+
+            AssetResponse<?> mr = closest.useAsset(assetClass, position);
 
             result.put(measurable, mr);
         }

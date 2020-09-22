@@ -1,9 +1,10 @@
 package domain.unit.contracts;
 
 import domain.terrain.models.aggregate.Position;
-import support.utils.MeasureResponse;
+import support.utils.AssetResponse;
 
 public interface Asset {
 
-    public MeasureResponse<?> scan(Position position) throws Exception;
+    public AssetResponse<?> scan(Position position) throws Exception;
 }
+ 

@@ -27,9 +27,11 @@ public class Terrain {
 
     private void make() {        
         this.positions = new Position[this.rows][this.columns];
+        Long id = 1L;
         for(int i = 0 ; i < this.positions.length ; i++) {
             for(int j = 0 ; j < this.positions[i].length ; j++) {
-                this.positions[i][j] = new Position(i, j);
+                this.positions[i][j] = new Position(id, i, j);
+                id++;
             }
         }
     }
